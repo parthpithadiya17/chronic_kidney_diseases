@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CKD Prediction App</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100">
+
+  <div class="max-w-5xl mx-auto p-6">
+    <h1 class="text-3xl font-bold mb-6 text-center">Chronic Kidney Disease Prediction</h1>
+
+    <!-- FORM -->
+    <form method="POST" action="/predict" class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white p-6 rounded-lg shadow">
+
+      <!-- Input Fields -->
+      <input name="age" placeholder="e.g., 45" class="border p-2 rounded" required>
+      <input name="bp" placeholder="Blood Pressure (e.g., 80)" class="border p-2 rounded" required>
+      <input name="sg" placeholder="Specific Gravity (e.g., 1.020)" class="border p-2 rounded" required>
+      <input name="al" placeholder="Albumin (e.g., 1)" class="border p-2 rounded" required>
+      <input name="su" placeholder="Sugar (e.g., 0)" class="border p-2 rounded" required>
+
+      <select name="rbc" class="border p-2 rounded" required>
+        <option value="" disabled selected>Red Blood Cells</option>
+        <option value="Normal">Normal</option>
+        <option value="Abnormal">Abnormal</option>
+      </select>
+
+      <select name="pc" class="border p-2 rounded" required>
+        <option value="" disabled selected>Pus Cell</option>
+        <option value="Normal">Normal</option>
+        <option value="Abnormal">Abnormal</option>
+      </select>
+
+      <select name="pcc" class="border p-2 rounded" required>
+        <option value="" disabled selected>Pus Cell Clumps</option>
+        <option value="Present">Present</option>
+        <option value="Not Present">Not Present</option>
+      </select>
+
+      <select name="ba" class="border p-2 rounded" required>
+        <option value="" disabled selected>Bacteria</option>
+        <option value="Present">Present</option>
+        <option value="Not Present">Not Present</option>
+      </select>
+
+      <input name="bgr" placeholder="Blood Glucose Random (e.g., 121)" class="border p-2 rounded" required>
+      <input name="bu" placeholder="Blood Urea (e.g., 36)" class="border p-2 rounded" required>
+      <input name="sc" placeholder="Serum Creatinine (e.g., 1.2)" class="border p-2 rounded" required>
+      <input name="sod" placeholder="Sodium (e.g., 138)" class="border p-2 rounded" required>
+      <input name="pot" placeholder="Potassium (e.g., 4.5)" class="border p-2 rounded" required>
+      <input name="hemo" placeholder="Hemoglobin (e.g., 15.4)" class="border p-2 rounded" required>
+      <input name="pcv" placeholder="Packed Cell Volume (e.g., 44)" class="border p-2 rounded" required>
+      <input name="wc" placeholder="WBC count (e.g., 7800)" class="border p-2 rounded" required>
+      <input name="rc" placeholder="RBC count (e.g., 5.2)" class="border p-2 rounded" required>
+
+      <select name="htn" class="border p-2 rounded" required>
+        <option value="" disabled selected>Hypertension</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
+
+      <select name="dm" class="border p-2 rounded" required>
+        <option value="" disabled selected>Diabetes Mellitus</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
+
+      <select name="cad" class="border p-2 rounded" required>
+        <option value="" disabled selected>Coronary Artery Disease</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
+
+      <select name="appet" class="border p-2 rounded" required>
+        <option value="" disabled selected>Appetite</option>
+        <option value="Good">Good</option>
+        <option value="Poor">Poor</option>
+      </select>
+
+      <select name="pe" class="border p-2 rounded" required>
+        <option value="" disabled selected>Pedal Edema</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
+
+      <select name="ane" class="border p-2 rounded" required>
+        <option value="" disabled selected>Anemia</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
+
+      <!-- Submit Button -->
+      <div class="md:col-span-2">
+        <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded hover:bg-blue-700">Predict CKD</button>
+      </div>
+    </form>
+
+    <!-- Result -->
+    {% if prediction %}
+      <div class="mt-6 p-4 bg-green-100 text-center text-xl font-semibold rounded">
+        {{ prediction }}
+      </div>
+    {% endif %}
+
+    <!-- Chart Section -->
+    <div class="mt-10 p-6 bg-white rounded shadow">
+      <h2 class="text-xl font-bold mb-4">CKD Risk Stats (Sample)</h2>
+      <canvas id="ckdChart" height="100"></canvas>
+    </div>
+  </div>
+
+  <script>
+    const ctx = document.getElementById('ckdChart');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Normal', 'Mild', 'Moderate', 'Severe', 'Kidney Failure'],
+        datasets: [{
+          label: 'Sample Patient Distribution',
+          data: [70, 40, 30, 15, 5],
+          backgroundColor: ['#4ade80', '#facc15', '#fb923c', '#f87171', '#dc2626']
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>
